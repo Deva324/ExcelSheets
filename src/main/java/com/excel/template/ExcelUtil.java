@@ -32,7 +32,7 @@ public class ExcelUtil {
 		return stories;
 	}
 
-	public static void copyRow(XSSFRow srcRow, XSSFRow newRow) {
+	public static void copyRow(XSSFRow srcRow, XSSFRow newRow, String sheetName) {
 		int j = srcRow.getFirstCellNum();
 		if (j < 0) {
 			j = 0;
@@ -42,7 +42,8 @@ public class ExcelUtil {
 			XSSFCell newCell = newRow.getCell(j);
 			if (oldCell != null) {
 				if (oldCell.getCellType() == Cell.CELL_TYPE_FORMULA) {
-					newCell.setCellFormula(oldCell.getCellFormula());
+					String s4 = oldCell.getCellFormula().replace("StoryID", sheetName);
+					newCell.setCellFormula(s4);
 				}
 
 			}

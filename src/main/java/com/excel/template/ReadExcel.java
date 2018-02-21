@@ -4,13 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.CellCopyPolicy;
@@ -18,10 +12,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openxmlformats.schemas.drawingml.x2006.chart.CTBarChart;
-import org.openxmlformats.schemas.drawingml.x2006.chart.CTBarSer;
-import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTMarker;
-import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTTwoCellAnchor;
 
 public class ReadExcel {
 	private static final String fileName = "C:\\Users\\dgadiam\\Documents\\";
@@ -43,15 +33,18 @@ public class ReadExcel {
 			XSSFWorkbook workbook = new XSSFWorkbook(fis);
 			XSSFSheet s = workbook.getSheet("Overview");
 			CellCopyPolicy cp = new CellCopyPolicy();
+
 			for (Map.Entry<String, String> entry : stories.entrySet()) {
+				XSSFSheet storySheet = workbook.cloneSheet(1, entry.getKey().replace("-", ""));
+				storySheet.getRow(0).getCell(1).setCellValue(entry.getValue());
 				int n = s.getLastRowNum();
-				XSSFRow srcRow = s.getRow(n);
+				XSSFRow srcRow = s.getRow(1);
 				XSSFRow newRow = s.createRow(n + 1);
-				s.copyRows(n, n, n + 1, cp);
+				s.copyRows(1, 1, n + 1, cp);
 				newRow = s.getRow(n + 1);
 				newRow.getCell(0).setCellValue(entry.getKey());
 				newRow.getCell(1).setCellValue(entry.getValue());
-				ExcelUtil.copyRow(srcRow, newRow);
+				ExcelUtil.copyRow(srcRow, newRow, storySheet.getSheetName());
 			}
 
 			/*
