@@ -29,6 +29,7 @@ public class RowCopyBack {
 				copyCell(oldCell, newCell, styleMap);
 			}
 		}
+		System.out.println("');
 
 	}
 
